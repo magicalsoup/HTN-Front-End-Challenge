@@ -41,9 +41,6 @@ export default function Event({
         <div className="py-2" >
             <div className="flex justify-between">
                 <h1 className="text-xl font-bold text-neutral-800">{event.name}</h1>
-                {/* <div className={`${tagColors[eventTypes.indexOf(event.event_type)]}`}>
-                  {event.event_type.replace("_", " ")}
-                </div>  */}
                 <EventTypeTag eventTypeName={event.event_type}/>
             </div>
             <h1>

@@ -4,12 +4,13 @@ import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "lib/session";
 import { User } from "pages/api/user";
 import { InferGetServerSidePropsType } from "next";
-import { API_ENDPOINT } from "@/utils/metadata";
+import { API_ENDPOINT, eventTypes } from "@/utils/metadata";
 import { TEvent } from "@/utils/schema";
 import Event from "../components/Event";
 import { useRouter } from "next/router";
 import useUser from "@/lib/useUser";
 import fetchJson from "@/lib/fetchJson";
+import EventTypeTag from "@/components/EventTypeTag";
 
 async function getEvents() {
   const req = `${API_ENDPOINT}/events`;
@@ -35,11 +36,11 @@ export default function Home({
   }
 
   const [events, setEvents] = useState<TEvent[]>();
+  const [filteredEvents, setFilteredEvents] = useState<TEvent[]>();
 
 
   useEffect(() => {
     async function fetchEvents() {
-      
       const fetchedEvents = (await getEvents()).sort((a: TEvent, b: TEvent) => {
         if (a.start_time < b.start_time) { // sort events by start time
           return -1;
@@ -68,8 +69,13 @@ export default function Home({
               <p>Hmmm, you're not currently logged in, to see hidden events, please <a className="text-sky-400 underline" href="/login">log in.</a>
             </p>}
             <p>Click on events to learn more!</p>
-            <div>
+            <div className="flex flex-col gap-y-2">
               <p>Filter events based on:</p>
+              <div className="flex gap-x-4">
+                {eventTypes.map((eventType, index) => {
+                  return <EventTypeTag eventTypeName={eventType} key={index}/>
+                })}
+              </div>
             </div>
           </div>
 
