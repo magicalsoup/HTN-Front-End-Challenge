@@ -10,6 +10,8 @@ module.exports = {
         "coolGray": {
           200: "rgb(14, 52, 96)"
         }
+      },
+      fontFamily: {
       }
     },
   },
