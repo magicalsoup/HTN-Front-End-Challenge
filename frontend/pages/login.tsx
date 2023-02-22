@@ -47,7 +47,7 @@ export default function Login() {
         <Head>
           <title>Login</title>
         </Head>
-        <main className="h-screen w-full bg-gray-800 flex justify-center p-10 sm:p-24">
+        <main className="h-screen w-full bg-gray-800 flex justify-center pt-16 px-10 pb-10 sm:p-24">
           <div className="flex flex-col gap-y-4 max-w-xl">
             <h1 className="font-bold text-gray-100 text-xl sm:text-4xl text-center">Welcome Back Hacker!</h1>
             <p className="text-gray-400 text-sm sm:text-lg text-center">Dream big and build amazing things at Canada's largest hackathon.</p>
