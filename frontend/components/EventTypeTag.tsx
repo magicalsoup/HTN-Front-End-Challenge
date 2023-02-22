@@ -19,13 +19,13 @@ export default function EventTypeTag({eventTypeName, setTypeFilterList}: {
     }, [clicked]);
 
     if(clicked) {
-        return <button className={`${eventTypeColor} p-2 rounded-md text-gray-100`} 
+        return <button className={`${eventTypeColor} p-1 sm:p-2 rounded-md text-gray-100 text-md sm:text-lg`} 
                     onClick={() => setClicked(!clicked)}>
             {eventTypeName.replace("_", " ")}
         </button>
     }
     else {
-        return <button className={`bg-gray-400 p-2 rounded-md text-gray-100`} 
+        return <button className={`bg-gray-400 p-1 sm:p-2 p-2 rounded-md text-gray-100 text-md sm:text-lg`} 
                     onClick={() => setClicked(!clicked)}>
                 {eventTypeName.replace("_", " ")}
             </button>

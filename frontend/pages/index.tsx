@@ -10,6 +10,8 @@ import Event from "../components/Event";
 import useUser from "@/lib/useUser";
 import fetchJson from "@/lib/fetchJson";
 import EventTypeTag from "@/components/EventTypeTag";
+import Header from "../components/Header";
+import Modal from "@/components/Modal";
 
 async function getEvents() {
   const req = `${API_ENDPOINT}/events`;
@@ -27,6 +29,8 @@ export default function Home({
   const [typeFilterList, setTypeFilterList] = useState<Set<string>>(new Set());
   const [filteredEvents, setFilteredEvents] = useState<TEvent[]>();
   const [searchParam, setSearchParam] = useState("");
+  const [selectedEvent, setSelectedEvent] = useState<TEvent>();
+  const [showModal, setShowModal] = useState(false);
 
   async function logOut(event: { preventDefault: () => void; }) {
     event.preventDefault();
@@ -83,22 +87,16 @@ export default function Home({
   return (
     <>
       <Head>
-        <title>Schedule</title>
+        <title>Events</title>
       </Head>
-      <main className="min-h-screen w-full bg-gray-800 flex justify-center px-4 py-12 md:p-24">
-        
-        <div className="w-[798px] flex flex-col gap-y-4">
-          <div className="text-gray-100 font-bold text-5xl">Hack the North but from wish</div>
+      <Header />
+      <main className="min-h-screen w-full bg-gray-800 flex justify-center px-4 py-32 md:px-24">
+        <div className="w-full sm:w-[798px] flex flex-col gap-y-4">
+          <div className="text-gray-100 font-bold text-3xl sm:text-5xl py-1">Events</div>
           <div className="text-white flex flex-col">
-            {user?.isLoggedIn && 
-              <p>Welcome back {user?.userName}! <a className="text-sky-400 underline" href="/" onClick={logOut}>Log out</a>
-              </p>
-            }
-            {!user?.isLoggedIn && 
-              <p><a className="text-sky-400 underline" href="/login">Log in</a> to see even more cool stuff!
-            </p>}
-            <p>Click on events to learn more! Select tags below to filter by event type.</p>
-            <div className="flex justify-between py-4 gap-y-2">
+            
+            <p className="text-sm">Select tags below to filter by event type.</p>
+            <div className="flex flex-col sm:flex-row justify-between py-4 gap-y-3">
               <div className="flex gap-x-4">
                 {eventTypes.map((eventType, index) => {
                   return <EventTypeTag key={index} eventTypeName={eventType} setTypeFilterList={setTypeFilterList}/>
@@ -118,9 +116,21 @@ export default function Home({
 
           {filteredEvents?.map((event, index) => {
               if (event.permission === "public" || user?.isLoggedIn) {
-                return <Event event={event} isLoggedIn={user?.isLoggedIn} key={index}/>;
+                return <Event event={event} 
+                              isLoggedIn={user?.isLoggedIn} 
+                              setShowModal={setShowModal}
+                              setSelectedEvent={setSelectedEvent}
+                              key={index}/>;
               }
             })}
+          
+          {showModal && selectedEvent && 
+          <Modal 
+            setShowModal={setShowModal}
+            selectedEvent={selectedEvent}
+            setSelectedEvent={setSelectedEvent}/>
+          }
+
         </div>
       </main>
     </>
