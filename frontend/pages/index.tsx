@@ -25,6 +25,11 @@ export default function Home({
   const router = useRouter();
   const { mutateUser } = useUser();
 
+  const [events, setEvents] = useState<TEvent[]>();
+  const [typeFilterList, setTypeFilterList] = useState<Set<string>>(new Set());
+  const [filteredEvents, setFilteredEvents] = useState<TEvent[]>();
+  const [searchParam, setSearchParam] = useState("");
+
   async function logOut(event: { preventDefault: () => void; }) {
     event.preventDefault();
     mutateUser(
@@ -33,10 +38,6 @@ export default function Home({
     );
     router.push("/");
   }
-
-  const [events, setEvents] = useState<TEvent[]>();
-  const [typeFilterList, setTypeFilterList] = useState<Set<string>>(new Set());
-  const [filteredEvents, setFilteredEvents] = useState<TEvent[]>();
 
   useEffect(() => {
     if(events) {
@@ -49,11 +50,23 @@ export default function Home({
         })
         return match;
       }));
-
       console.table(filteredEvents);
     }
     
   }, [typeFilterList]);
+
+  useEffect(() => {
+    if(events) {
+      setFilteredEvents([...events].filter((event) => {
+        if(searchParam === "") { // base case when nothing is being searched
+          return true;
+        }
+        const regExp = new RegExp(searchParam, 'gi'); // if the string appears anywhere in the event name, case insensitive
+        const result = event.name.match(regExp);
+        return result && result.length !== 0; // if found a match, then include it
+      }))
+    }
+  }, [searchParam]);
 
   useEffect(() => {
     async function fetchEvents() {
@@ -80,24 +93,27 @@ export default function Home({
           <div className="text-gray-100 font-bold text-5xl">Hack the North but from wish</div>
           <div className="text-white flex flex-col">
             {user?.isLoggedIn && 
-              <div>Welcome back hacker! <a className="text-sky-400 underline" href="/" onClick={logOut}>Log out</a>
-              </div>}
+              <p>Welcome back {user?.userName}! <a className="text-sky-400 underline" href="/" onClick={logOut}>Log out</a>
+              </p>
+            }
             {!user?.isLoggedIn && 
-              <p>Hmmm, you're not currently logged in, to see hidden events, please <a className="text-sky-400 underline" href="/login">log in.</a>
+              <p><a className="text-sky-400 underline" href="/login">Log in</a> to see even more cool stuff!
             </p>}
-            <p>Click on events to learn more!</p>
-            <div className="flex flex-col py-4 gap-y-2">
+            <p>Click on events to learn more! Select tags below to filter by event type.</p>
+            <div className="flex justify-between py-4 gap-y-2">
               <div className="flex gap-x-4">
-                <p className="text-3xl">Filter:</p>
                 {eventTypes.map((eventType, index) => {
                   return <EventTypeTag key={index} eventTypeName={eventType} setTypeFilterList={setTypeFilterList}/>
                   })
                 }
               </div>
 
-              <div>
-
-              </div>
+              <input 
+                className="rounded-md p-2 text-neutral-800"
+                placeholder="Search"
+                value={searchParam}
+                onChange={(e) => setSearchParam(e.target.value)}
+              />
 
             </div>
           </div>

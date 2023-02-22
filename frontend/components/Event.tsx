@@ -20,6 +20,8 @@ export default function Event({
   
   const [ showDetails, setShowDetails ] = useState(false);
   const [ relatedEvents, setRelatedEvents ] = useState<TEvent[]>();
+  const tagColors = ["bg-red-400", "bg-orange-400", "bg-purple-400"]; // in tailwind styles for consistency
+  const eventTypes= ["workshop", "activity", "tech_talk"]; // redudant but workaround for tailwind sync issues
 
   useEffect(() => {
     async function fetchRelatedEvents() {
@@ -34,11 +36,13 @@ export default function Event({
 
   return (
     <div className="flex flex-col bg-stone-300 px-16 py-8 rounded-md hover:cursor-pointer" id={`event-${event.id}`}>
-      <div onClick={() => setShowDetails(!showDetails)}>
+      <div onClick={() => setShowDetails(!showDetails)} className="flex flex-col gap-y-4">
         <div className="py-2" >
             <div className="flex justify-between">
                 <h1 className="text-xl font-bold text-neutral-800">{event.name}</h1>
-                <div>{event.event_type.replace("_", " ")}</div>
+                <div className={`${tagColors[eventTypes.indexOf(event.event_type)]} rounded-md p-2`}>
+                  {event.event_type.replace("_", " ")}
+                </div>
             </div>
             <h1>
                 {formatUnixTimeStamp(event.start_time)} to {formatUnixTimeStamp(event.end_time)}

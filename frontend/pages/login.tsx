@@ -1,12 +1,16 @@
 import Head from "next/head"
 import useUser from "@/lib/useUser";
-import fetchJson from "lib/fetchJson";
+import fetchJson, { FetchError } from "lib/fetchJson";
+import { DEMO_PASSWORD, DEMO_USERNAME } from "@/utils/login";
+import { useState } from "react";
 export default function Login() {
 
     const { mutateUser } = useUser({
       redirectTo: "/",
       redirectIfFound: true,
     })
+
+    const [errorMessage, setErrorMessage] = useState("");
 
     async function handleSubmit (event : any) { 
       event.preventDefault();
@@ -22,11 +26,17 @@ export default function Login() {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body),
+            
           }),
           false,
         );
       } catch(error) {
-        console.log(`An unexpected error happend: ${error}`);
+        if(error instanceof FetchError) {
+          setErrorMessage(error.data.message);
+        }
+        else {
+          console.log("Something unexpected occured", error);
+        }
       } 
     }
 
@@ -63,11 +73,13 @@ export default function Login() {
                             value="Login to Hack the North"
                             form="userform"
                         />
-                    </div>        
+                    </div>     
+                    {errorMessage !== "" && 
+                      <span className="py-2 text-red-400">{errorMessage}</span>}   
                 </form>
                 <div className="flex flex-col text-gray-400">
-                  <p>Demo username: test</p>
-                  <p>Demo password: password</p>
+                  <p>Demo username: {DEMO_USERNAME}</p>
+                  <p>Demo password: {DEMO_PASSWORD}</p>
                 </div>
               </div>
         </main>

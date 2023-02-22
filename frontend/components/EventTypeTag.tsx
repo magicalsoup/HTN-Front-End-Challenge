@@ -18,7 +18,6 @@ export default function EventTypeTag({eventTypeName, setTypeFilterList}: {
         }
     }, [clicked]);
 
-    // Doesnt work sadge
     if(clicked) {
         return <button className={`${eventTypeColor} p-2 rounded-md text-gray-100`} 
                     onClick={() => setClicked(!clicked)}>
