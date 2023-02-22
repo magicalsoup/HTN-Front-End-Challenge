@@ -7,7 +7,6 @@ import { InferGetServerSidePropsType } from "next";
 import { API_ENDPOINT, eventTypes } from "@/utils/metadata";
 import { TEvent } from "@/utils/schema";
 import Event from "../components/Event";
-import { useRouter } from "next/router";
 import useUser from "@/lib/useUser";
 import fetchJson from "@/lib/fetchJson";
 import EventTypeTag from "@/components/EventTypeTag";
@@ -22,7 +21,6 @@ export default function Home({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
 
-  const router = useRouter();
   const { mutateUser } = useUser();
 
   const [events, setEvents] = useState<TEvent[]>();
@@ -36,7 +34,7 @@ export default function Home({
       await fetchJson("/api/logout", {method: "POST"}),
       false,
     );
-    router.push("/");
+    location.reload();
   }
 
   // updates filter list when event type tags are selected

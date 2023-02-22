@@ -19,16 +19,17 @@ export default function Event({
 }) {
   
   const [ showDetails, setShowDetails ] = useState(false);
-  const [ relatedEvents, setRelatedEvents ] = useState<TEvent[]>();
+  const [ relatedEvents, setRelatedEvents ] = useState<TEvent[] | undefined[]>();
   const tagColors = ["bg-red-400", "bg-orange-400", "bg-purple-400"]; // in tailwind styles for consistency
   const eventTypes= ["workshop", "activity", "tech_talk"]; // redudant but workaround for tailwind sync issues
 
   useEffect(() => {
     async function fetchRelatedEvents() {
         // admittedly, this could get slow if there are a ton of related events, but should be very unlikely
-        const fetchedEvents = await Promise.all(event.related_events.map(async (id) => {
-            return (await getEvent(id));
-        }));
+        const fetchedEvents = await 
+              (await Promise.all(event.related_events
+              .map(async (id) => (await getEvent(id)))))
+              .filter((event) => (event.permission === "public" || isLoggedIn)); // make sure related events are visible in accordance if the user is logged in or not
         setRelatedEvents(fetchedEvents);
     }
     fetchRelatedEvents();
@@ -61,8 +62,8 @@ export default function Event({
             {relatedEvents?.length !== 0 && <div className="flex flex-col py-2">
                 <div> You might also be intersted in: </div>
                 {relatedEvents?.map((event, index) => {
-                    return <Link href={`#event-${event.id}`} key={index} className="text-sky-800 underline font-bold">
-                            {event.name}
+                    return <Link href={`#event-${event?.id}`} key={index} className="text-sky-800 underline font-bold">
+                            {event?.name}
                     </Link>
                 })}
             </div>}
