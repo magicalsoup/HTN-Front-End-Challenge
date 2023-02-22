@@ -36,8 +36,25 @@ export default function Home({
   }
 
   const [events, setEvents] = useState<TEvent[]>();
+  const [typeFilterList, setTypeFilterList] = useState<Set<string>>(new Set());
   const [filteredEvents, setFilteredEvents] = useState<TEvent[]>();
 
+  useEffect(() => {
+    if(filteredEvents) {
+      setFilteredEvents([...events].filter((event) => {
+        let match = false;
+        typeFilterList.forEach((eventType) => {
+          if(eventType === event.event_type) {
+            match = true;
+          }
+        })
+        return match;
+      }));
+
+      console.table(filteredEvents);
+    }
+    
+  }, [typeFilterList]);
 
   useEffect(() => {
     async function fetchEvents() {
@@ -47,7 +64,8 @@ export default function Home({
         }
         return 1;
       });
-      setEvents(fetchedEvents);
+      setEvents([...fetchedEvents]);
+      setFilteredEvents([...fetchedEvents]);
     }
     fetchEvents();
   }, []);
@@ -57,9 +75,9 @@ export default function Home({
       <Head>
         <title>Schedule</title>
       </Head>
-      <main className="h-min-screen w-full bg-gray-800 flex justify-center p-24">
+      <main className="min-h-screen w-full bg-gray-800 flex justify-center p-24">
         
-        <div className="max-w-[798px] flex flex-col gap-y-4">
+        <div className="w-[798px] flex flex-col gap-y-4">
           <div className="text-gray-100 font-bold text-5xl">Hack the North but from wish</div>
           <div className="text-white flex flex-col">
             {user?.isLoggedIn && 
@@ -73,14 +91,14 @@ export default function Home({
               <p>Filter events based on:</p>
               <div className="flex gap-x-4">
                 {eventTypes.map((eventType, index) => {
-                  return <EventTypeTag eventTypeName={eventType} key={index}/>
-                })}
+                  return <EventTypeTag key={index} eventTypeName={eventType} setTypeFilterList={setTypeFilterList}/>
+                  })
+                }
               </div>
             </div>
           </div>
 
-          {events &&
-            events.map((event, index) => {
+          {filteredEvents?.map((event, index) => {
               if (event.permission === "public" || user?.isLoggedIn) {
                 return <Event event={event} isLoggedIn={user?.isLoggedIn} key={index}/>;
               }

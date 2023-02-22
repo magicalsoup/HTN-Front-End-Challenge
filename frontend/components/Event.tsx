@@ -3,7 +3,6 @@ import { formatUnixTimeStamp } from "@/lib/format";
 import { useState, useEffect } from "react";
 import { API_ENDPOINT } from "@/utils/metadata";
 import Link from "next/link";
-import EventTypeTag from "./EventTypeTag";
 
 async function getEvent(id: number) : Promise<TEvent> {
     const req = `${API_ENDPOINT}/events/${id}`;
@@ -33,15 +32,13 @@ export default function Event({
     fetchRelatedEvents();
   }, []);
 
-  // TODO add colors for tags
   return (
-    <div className="flex flex-col bg-stone-300 px-16 py-8 rounded-md hover:cursor-pointer" 
-        id={`event-${event.id}`}>
+    <div className="flex flex-col bg-stone-300 px-16 py-8 rounded-md hover:cursor-pointer" id={`event-${event.id}`}>
       <div onClick={() => setShowDetails(!showDetails)}>
         <div className="py-2" >
             <div className="flex justify-between">
                 <h1 className="text-xl font-bold text-neutral-800">{event.name}</h1>
-                <EventTypeTag eventTypeName={event.event_type}/>
+                <div>{event.event_type.replace("_", " ")}</div>
             </div>
             <h1>
                 {formatUnixTimeStamp(event.start_time)} to {formatUnixTimeStamp(event.end_time)}
