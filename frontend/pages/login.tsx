@@ -47,28 +47,28 @@ export default function Login() {
         <Head>
           <title>Login</title>
         </Head>
-        <main className="h-screen w-full bg-gray-800 flex justify-center p-24">
+        <main className="h-screen w-full bg-gray-800 flex justify-center p-10 sm:p-24">
           <div className="flex flex-col gap-y-4 max-w-xl">
-            <h1 className="font-bold text-gray-100 text-4xl text-center">Welcome Back Hacker!</h1>
-            <p className="text-gray-400 text-lg text-center">Dream big and build amazing things at Canada's largest hackathon.</p>
+            <h1 className="font-bold text-gray-100 text-xl sm:text-4xl text-center">Welcome Back Hacker!</h1>
+            <p className="text-gray-400 text-sm sm:text-lg text-center">Dream big and build amazing things at Canada's largest hackathon.</p>
             <form onSubmit={handleSubmit} id="userform">
-                    <div className = "flex flex-col py-8">
-                        <p className = "flex py-2 text-gray-400 text-lg">Username:</p>
+                    <div className = "flex flex-col py-8 gap-y-2">
+                        <p className = "flex py-1 sm:py-2 text-sm text-gray-400 sm:text-lg">Username:</p>
                         <input 
-                            className = "p-2 w-full border-2 border-gray-300 rounded-xl"
+                            className = "p-1 sm:p-2 w-full border-2 border-gray-300 rounded-xl"
                             type = "text"
                             name="username"
                         />
-                        <p className = "flex py-2 text-gray-400 text-lg">Password:</p>
+                        <p className = "flex py-1 sm:py-2 text-sm text-gray-400 sm:text-lg">Password:</p>
                         <input 
-                            className = "p-2 w-full border-2 border-gray-300 rounded-xl"
+                            className = "p-1 sm:p-2 w-full border-2 border-gray-300 rounded-xl"
                             type = "password"
                             name="password"
                         />
                     </div>
-                    <div className = "flex flex-row space-x-10">
+                    <div className = "flex flex-row">
                         <input
-                            className = "flex flex-grow object-none object-right justify-center bg-sky-400 hover:bg-sky-500 hover:cursor-pointer rounded text-white p-2 font-bold"
+                            className = "flex text-sm sm:text-lg flex-grow object-none object-right justify-center bg-sky-400 hover:bg-sky-500 hover:cursor-pointer rounded text-white p-2 font-bold"
                             type="submit"
                             value="Login to Hack the North"
                             form="userform"
@@ -77,7 +77,7 @@ export default function Login() {
                     {errorMessage !== "" && 
                       <span className="py-2 text-red-400">{errorMessage}</span>}   
                 </form>
-                <div className="flex flex-col text-gray-400">
+                <div className="flex flex-col text-gray-400 text-sm sm:text-lg">
                   <p>Demo username: {DEMO_USERNAME}</p>
                   <p>Demo password: {DEMO_PASSWORD}</p>
                 </div>

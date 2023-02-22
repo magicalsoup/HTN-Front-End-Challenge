@@ -32,14 +32,7 @@ export default function Home({
   const [selectedEvent, setSelectedEvent] = useState<TEvent>();
   const [showModal, setShowModal] = useState(false);
 
-  async function logOut(event: { preventDefault: () => void; }) {
-    event.preventDefault();
-    mutateUser(
-      await fetchJson("/api/logout", {method: "POST"}),
-      false,
-    );
-    location.reload();
-  }
+
 
   // updates filter list when event type tags are selected
   useEffect(() => {
