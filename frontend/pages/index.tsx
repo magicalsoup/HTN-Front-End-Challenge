@@ -18,7 +18,6 @@ async function getEvents() {
   return res.json();
 }
 
-
 export default function Home({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
@@ -40,7 +39,7 @@ export default function Home({
   const [filteredEvents, setFilteredEvents] = useState<TEvent[]>();
 
   useEffect(() => {
-    if(filteredEvents) {
+    if(events) {
       setFilteredEvents([...events].filter((event) => {
         let match = false;
         typeFilterList.forEach((eventType) => {
@@ -75,7 +74,7 @@ export default function Home({
       <Head>
         <title>Schedule</title>
       </Head>
-      <main className="min-h-screen w-full bg-gray-800 flex justify-center p-24">
+      <main className="min-h-screen w-full bg-gray-800 flex justify-center px-4 py-12 md:p-24">
         
         <div className="w-[798px] flex flex-col gap-y-4">
           <div className="text-gray-100 font-bold text-5xl">Hack the North but from wish</div>
@@ -87,14 +86,19 @@ export default function Home({
               <p>Hmmm, you're not currently logged in, to see hidden events, please <a className="text-sky-400 underline" href="/login">log in.</a>
             </p>}
             <p>Click on events to learn more!</p>
-            <div className="flex flex-col gap-y-2">
-              <p>Filter events based on:</p>
+            <div className="flex flex-col py-4 gap-y-2">
               <div className="flex gap-x-4">
+                <p className="text-3xl">Filter:</p>
                 {eventTypes.map((eventType, index) => {
                   return <EventTypeTag key={index} eventTypeName={eventType} setTypeFilterList={setTypeFilterList}/>
                   })
                 }
               </div>
+
+              <div>
+
+              </div>
+
             </div>
           </div>
 

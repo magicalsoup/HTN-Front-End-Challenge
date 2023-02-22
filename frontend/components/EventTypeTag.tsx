@@ -1,4 +1,3 @@
-import { tagColors, eventTypes } from "@/utils/metadata";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 export default function EventTypeTag({eventTypeName, setTypeFilterList}: {
     eventTypeName: string;  
@@ -6,7 +5,7 @@ export default function EventTypeTag({eventTypeName, setTypeFilterList}: {
 }) {
     const [ clicked, setClicked ] = useState(true);
     const tagColors = ["bg-red-400", "bg-orange-400", "bg-purple-400"]; // in tailwind styles for simplicity
-    const eventTypes= ["workshop", "activity", "tech_talk"];
+    const eventTypes= ["workshop", "activity", "tech_talk"]; // redudant but workaround for tailwind issues
 
     const eventTypeColor = tagColors[eventTypes.indexOf(eventTypeName)]
 
@@ -21,15 +20,15 @@ export default function EventTypeTag({eventTypeName, setTypeFilterList}: {
 
     // Doesnt work sadge
     if(clicked) {
-        return <div className={`${eventTypeColor} p-2 rounded-md text-gray-100`} 
+        return <button className={`${eventTypeColor} p-2 rounded-md text-gray-100`} 
                     onClick={() => setClicked(!clicked)}>
             {eventTypeName.replace("_", " ")}
-        </div>
+        </button>
     }
     else {
-        return <div className={`bg-gray-400 p-2 rounded-md text-gray-100`} 
+        return <button className={`bg-gray-400 p-2 rounded-md text-gray-100`} 
                     onClick={() => setClicked(!clicked)}>
                 {eventTypeName.replace("_", " ")}
-            </div>
+            </button>
     }
 }
