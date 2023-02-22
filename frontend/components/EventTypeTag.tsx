@@ -1,11 +1,12 @@
+import { getEventTypes, getTagColors } from "@/utils/metadata";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 export default function EventTypeTag({eventTypeName, setTypeFilterList}: {
     eventTypeName: string;  
     setTypeFilterList: Dispatch<SetStateAction<Set<string>>>;
 }) {
     const [ clicked, setClicked ] = useState(true);
-    const tagColors = ["bg-red-400", "bg-orange-400", "bg-purple-400"]; // in tailwind styles for simplicity
-    const eventTypes= ["workshop", "activity", "tech_talk"]; // redudant but workaround for tailwind issues
+    const tagColors = getTagColors(); 
+    const eventTypes = getEventTypes();
 
     const eventTypeColor = tagColors[eventTypes.indexOf(eventTypeName)]
 

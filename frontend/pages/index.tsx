@@ -4,11 +4,9 @@ import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "lib/session";
 import { User } from "pages/api/user";
 import { InferGetServerSidePropsType } from "next";
-import { API_ENDPOINT, eventTypes } from "@/utils/metadata";
+import { API_ENDPOINT, getEventTypes,  } from "@/utils/metadata";
 import { TEvent } from "@/utils/schema";
 import Event from "../components/Event";
-import useUser from "@/lib/useUser";
-import fetchJson from "@/lib/fetchJson";
 import EventTypeTag from "@/components/EventTypeTag";
 import Header from "../components/Header";
 import Modal from "@/components/Modal";
@@ -23,8 +21,6 @@ export default function Home({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
 
-  const { mutateUser } = useUser();
-
   const [events, setEvents] = useState<TEvent[]>();
   const [typeFilterList, setTypeFilterList] = useState<Set<string>>(new Set());
   const [filteredEvents, setFilteredEvents] = useState<TEvent[]>();
@@ -32,7 +28,7 @@ export default function Home({
   const [selectedEvent, setSelectedEvent] = useState<TEvent>();
   const [showModal, setShowModal] = useState(false);
 
-
+  const eventTypes = getEventTypes();
 
   // updates filter list when event type tags are selected
   useEffect(() => {

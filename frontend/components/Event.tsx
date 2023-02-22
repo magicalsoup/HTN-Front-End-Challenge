@@ -2,6 +2,7 @@ import { TEvent } from "@/utils/schema";
 import {formatTimeInterval } from "@/lib/format";
 import { SetStateAction, Dispatch } from "react";
 import Link from "next/link";
+import { getEventTypes, getTagColors } from "../utils/metadata";
 
 export default function Event({
   event,
@@ -16,8 +17,8 @@ export default function Event({
 }) {
   
 
-  const tagColors = ["bg-red-400", "bg-orange-400", "bg-purple-400"]; // in tailwind styles for consistency
-  const eventTypes= ["workshop", "activity", "tech_talk"]; // redudant but workaround for tailwind sync issues
+  const tagColors = getTagColors(); 
+  const eventTypes= getEventTypes(); 
 
   return (
     <div className="flex flex-col bg-stone-300 px-2 py-4 sm:px-16 sm:py-8 rounded-md">

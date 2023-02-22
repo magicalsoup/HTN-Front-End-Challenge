@@ -4,6 +4,7 @@ import React, { Dispatch, SetStateAction, useState, useEffect} from "react";
 import Link from "next/link";
 import { formatTimeInterval } from "@/lib/format";
 import { getRelatedEvents } from "@/utils/eventdata";
+import { getEventTypes, getTagColors } from "@/utils/metadata";
 
 export default function Modal({
   selectedEvent,
@@ -15,8 +16,8 @@ export default function Modal({
   setSelectedEvent: Dispatch<SetStateAction<TEvent | undefined>>;
 }) {
   const { user, mutateUser } = useUser();
-  const tagColors = ["bg-red-400", "bg-orange-400", "bg-purple-400"]; // in tailwind styles for consistency
-  const eventTypes= ["workshop", "activity", "tech_talk"]; // redudant but workaround for tailwind sync issues
+  const tagColors = getTagColors();
+  const eventTypes = getEventTypes();
   const [ relatedEvents, setRelatedEvents ] = useState<TEvent[] | undefined[]>();
 
   useEffect(() => {
