@@ -39,18 +39,18 @@ export default function Home({
     router.push("/");
   }
 
+  // updates filter list when event type tags are selected
   useEffect(() => {
     if(events) {
       setFilteredEvents([...events].filter((event) => {
         let match = false;
         typeFilterList.forEach((eventType) => {
           if(eventType === event.event_type) {
-            match = true;
+            match = true; // if it matches any one of them
           }
         })
-        return match;
+        return match; 
       }));
-      console.table(filteredEvents);
     }
     
   }, [typeFilterList]);
